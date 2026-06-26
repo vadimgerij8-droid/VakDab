@@ -136,7 +136,7 @@
         .app-container {
             max-width: 1320px;
             margin: 0 auto;
-            padding: 0.5rem 1.5rem 3rem;  /* ← було 3.5rem, тепер 0.5rem */
+            padding: 0 1.5rem 3rem;  /* ← верхній padding 0, хедер притиснуто до верху */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -378,12 +378,12 @@
         }
 
         /* ============================================================
-                   CLOCK — тепер на одному рівні з хедером
+                   CLOCK — вирівняно з верхом хедера
                    ============================================================ */
         .appletv-agnative-topnav .agnative-topnav-clock {
             position: absolute;
             right: 1.15em;
-            top: calc(1.4rem + env(safe-area-inset-top, 0px)); /* ← змінено на 1.4rem замість 0.7em */
+            top: env(safe-area-inset-top, 0px);   /* ← годинник теж притиснутий до верху */
             z-index: 20;
             display: inline-flex;
             align-items: center;
@@ -494,7 +494,7 @@
         }
 
         /* ============================================================
-                   ХЕДЕР
+                   ХЕДЕР — притиснутий до верху
                    ============================================================ */
         .glass {
             background: linear-gradient(180deg, var(--glass), rgba(255, 255, 255, 0.03));
@@ -517,7 +517,7 @@
             align-items: center;
             gap: 1.2rem;
             margin-bottom: 1.8rem;
-            padding-top: 0.3rem;   /* ← замість calc(1.4rem + env(...)) */
+            padding-top: env(safe-area-inset-top, 0px);   /* ← тільки безпечна зона, без додаткового відступу */
             padding-bottom: 1.4rem;
             border-bottom: 1px solid var(--border);
             transition: all var(--transition);
@@ -527,7 +527,6 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            /* padding-top більше не потрібен, бо він вже є в .header */
         }
         .burger-btn {
             background: var(--surface);
@@ -1262,7 +1261,7 @@
                    ============================================================ */
         @media (max-width: 768px) {
             .app-container {
-                padding: 0.3rem 1rem 2rem;   /* ← було 3rem, тепер 0.3rem */
+                padding: 0 1rem 2rem;   /* ← верхній padding 0 */
             }
             .anime-grid {
                 gap: 1rem;
@@ -1335,7 +1334,7 @@
         }
         @media (max-width: 480px) {
             .app-container {
-                padding: 0.2rem 0.8rem 1.5rem;   /* ← було 2.5rem, тепер 0.2rem */
+                padding: 0 0.8rem 1.5rem;   /* ← верхній padding 0 */
             }
             .anime-grid {
                 grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
