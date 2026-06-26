@@ -136,7 +136,7 @@
         .app-container {
             max-width: 1320px;
             margin: 0 auto;
-            padding: 0 1.5rem 3rem;  /* ← верхній padding 0, хедер притиснуто до верху */
+            padding: 0 1.5rem 3rem;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -378,19 +378,19 @@
         }
 
         /* ============================================================
-                   CLOCK — опущений на 3 см та збільшений у 2 рази
+                   CLOCK — зменшений удвічі та піднятий на 1.5 см
                    ============================================================ */
         .appletv-agnative-topnav .agnative-topnav-clock {
             position: absolute;
             right: 1.15em;
-            top: calc(env(safe-area-inset-top, 0px) + 30px);   /* ← опущено на 3 см (30px) */
+            top: calc(env(safe-area-inset-top, 0px) + 15px);
             z-index: 20;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 10em;           /* 5em * 2 */
-            height: 6em;               /* 3em * 2 */
-            padding: 0 2.2em;          /* 1.1em * 2 */
+            min-width: 5em;
+            height: 3em;
+            padding: 0 1.1em;
             border-radius: 999px;
             background: rgba(22, 24, 30, .26);
             border: 1px solid rgba(255, 255, 255, .10);
@@ -398,14 +398,14 @@
             backdrop-filter: blur(18px) saturate(140%);
             -webkit-backdrop-filter: blur(18px) saturate(140%);
             color: rgba(255, 255, 255, .95);
-            font-size: 2.1em;          /* 1.05em * 2 */
+            font-size: 1.05em;
             font-weight: 700;
             letter-spacing: .01em;
             cursor: default;
             user-select: none;
         }
         .agnative-has-hero .appletv-agnative-topnav .agnative-topnav-clock {
-            font-size: calc(1.9em * var(--agnative-scale, 1)) !important; /* ≈ 2em з масштабом */
+            font-size: calc(0.95em * var(--agnative-scale, 1)) !important;
         }
 
         /* ============================================================
@@ -517,7 +517,7 @@
             align-items: center;
             gap: 1.2rem;
             margin-bottom: 1.8rem;
-            padding-top: env(safe-area-inset-top, 0px);   /* ← тільки безпечна зона, без додаткового відступу */
+            padding-top: env(safe-area-inset-top, 0px);
             padding-bottom: 1.4rem;
             border-bottom: 1px solid var(--border);
             transition: all var(--transition);
@@ -1261,7 +1261,7 @@
                    ============================================================ */
         @media (max-width: 768px) {
             .app-container {
-                padding: 0 1rem 2rem;   /* ← верхній padding 0 */
+                padding: 0 1rem 2rem;
             }
             .anime-grid {
                 gap: 1rem;
@@ -1320,11 +1320,11 @@
             }
             .appletv-agnative-topnav .agnative-topnav-clock {
                 right: 0.5em;
-                top: calc(env(safe-area-inset-top, 0px) + 20px); /* трохи вище на планшетах */
-                font-size: 1.6em;      /* зменшено */
-                min-width: 7em;
-                height: 4.5em;
-                padding: 0 1.6em;
+                top: calc(env(safe-area-inset-top, 0px) + 5px);
+                font-size: 0.8em;
+                min-width: 3.5em;
+                height: 2.25em;
+                padding: 0 0.8em;
             }
             .nfx-card-overlay__title {
                 font-size: 0.78em;
@@ -1334,7 +1334,7 @@
         }
         @media (max-width: 480px) {
             .app-container {
-                padding: 0 0.8rem 1.5rem;   /* ← верхній padding 0 */
+                padding: 0 0.8rem 1.5rem;
             }
             .anime-grid {
                 grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
@@ -1417,11 +1417,11 @@
             }
             .appletv-agnative-topnav .agnative-topnav-clock {
                 right: 0.3em;
-                top: calc(env(safe-area-inset-top, 0px) + 15px); /* менше зміщення */
-                font-size: 1.3em;      /* ще менше */
-                min-width: 5.5em;
-                height: 3.6em;
-                padding: 0 1.2em;
+                top: calc(env(safe-area-inset-top, 0px) + 0px);
+                font-size: 0.65em;
+                min-width: 2.75em;
+                height: 1.8em;
+                padding: 0 0.6em;
             }
             .nfx-card-overlay__title {
                 font-size: 0.7em;
@@ -1548,7 +1548,7 @@
     </div>
 
     <!-- ================================================================
-    JAVASCRIPT (без змін)
+    JAVASCRIPT
     ================================================================ -->
     <script>
         // ========================================================================
@@ -2697,7 +2697,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', init);
-        console.log('🚀 VAKDAB v0.5.1 — монохромна тема, ⎈ логотип в один рядок');
+        console.log('🚀 VAKDAB v0.5.2 — монохромна тема, годинник зменшено вдвічі');
         console.log('⌨️ Клавіші: / пошук • M меню • T тема • R випадкове • Esc закрити');
     </script>
 </body>
