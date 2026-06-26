@@ -136,7 +136,6 @@
         .app-container {
             max-width: 1320px;
             margin: 0 auto;
-            /* Додаємо верхній відступ 3.5rem (приблизно 3-4 см) для зміщення топ-бару вниз */
             padding: 3.5rem 1.5rem 3rem;
             min-height: 100vh;
             display: flex;
@@ -379,12 +378,12 @@
         }
 
         /* ============================================================
-                   CLOCK
+                   CLOCK — тепер на одному рівні з хедером
                    ============================================================ */
         .appletv-agnative-topnav .agnative-topnav-clock {
             position: absolute;
             right: 1.15em;
-            top: calc(0.7em + env(safe-area-inset-top, 0px)); /* ← ЗМІНА */
+            top: calc(1.4rem + env(safe-area-inset-top, 0px)); /* ← змінено на 1.4rem замість 0.7em */
             z-index: 20;
             display: inline-flex;
             align-items: center;
@@ -518,7 +517,7 @@
             align-items: center;
             gap: 1.2rem;
             margin-bottom: 1.8rem;
-            padding-top: calc(1.4rem + env(safe-area-inset-top, 0px));  /* ← ДОДАНО */
+            padding-top: calc(1.4rem + env(safe-area-inset-top, 0px));
             padding-bottom: 1.4rem;
             border-bottom: 1px solid var(--border);
             transition: all var(--transition);
@@ -528,7 +527,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding-top: env(safe-area-inset-top, 0px);  /* ← ДОДАНО */
+            /* padding-top більше не потрібен, бо він вже є в .header */
         }
         .burger-btn {
             background: var(--surface);
@@ -1259,11 +1258,11 @@
         }
 
         /* ============================================================
-                   АДАПТИВНІСТЬ (з урахуванням збільшеного верхнього відступу)
+                   АДАПТИВНІСТЬ
                    ============================================================ */
         @media (max-width: 768px) {
             .app-container {
-                padding: 3rem 1rem 2rem; /* верхній відступ зменшений, але все одно більший ніж був */
+                padding: 3rem 1rem 2rem;
             }
             .anime-grid {
                 gap: 1rem;
@@ -1336,7 +1335,7 @@
         }
         @media (max-width: 480px) {
             .app-container {
-                padding: 2.5rem 0.8rem 1.5rem; /* ще менший верхній відступ, але все одно додатковий */
+                padding: 2.5rem 0.8rem 1.5rem;
             }
             .anime-grid {
                 grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
@@ -1550,7 +1549,7 @@
     </div>
 
     <!-- ================================================================
-    JAVASCRIPT
+    JAVASCRIPT (без змін)
     ================================================================ -->
     <script>
         // ========================================================================
