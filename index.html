@@ -378,19 +378,19 @@
         }
 
         /* ============================================================
-                   CLOCK — вирівняно з верхом хедера
+                   CLOCK — опущений на 3 см та збільшений у 2 рази
                    ============================================================ */
         .appletv-agnative-topnav .agnative-topnav-clock {
             position: absolute;
             right: 1.15em;
-            top: env(safe-area-inset-top, 0px);   /* ← годинник теж притиснутий до верху */
+            top: calc(env(safe-area-inset-top, 0px) + 30px);   /* ← опущено на 3 см (30px) */
             z-index: 20;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 5em;
-            height: 3em;
-            padding: 0 1.1em;
+            min-width: 10em;           /* 5em * 2 */
+            height: 6em;               /* 3em * 2 */
+            padding: 0 2.2em;          /* 1.1em * 2 */
             border-radius: 999px;
             background: rgba(22, 24, 30, .26);
             border: 1px solid rgba(255, 255, 255, .10);
@@ -398,14 +398,14 @@
             backdrop-filter: blur(18px) saturate(140%);
             -webkit-backdrop-filter: blur(18px) saturate(140%);
             color: rgba(255, 255, 255, .95);
-            font-size: 1.05em;
+            font-size: 2.1em;          /* 1.05em * 2 */
             font-weight: 700;
             letter-spacing: .01em;
             cursor: default;
             user-select: none;
         }
         .agnative-has-hero .appletv-agnative-topnav .agnative-topnav-clock {
-            font-size: calc(.95em * var(--agnative-scale, 1)) !important;
+            font-size: calc(1.9em * var(--agnative-scale, 1)) !important; /* ≈ 2em з масштабом */
         }
 
         /* ============================================================
@@ -1320,11 +1320,11 @@
             }
             .appletv-agnative-topnav .agnative-topnav-clock {
                 right: 0.5em;
-                top: 0.5em;
-                font-size: 0.85em;
-                min-width: 4em;
-                height: 2.4em;
-                padding: 0 0.8em;
+                top: calc(env(safe-area-inset-top, 0px) + 20px); /* трохи вище на планшетах */
+                font-size: 1.6em;      /* зменшено */
+                min-width: 7em;
+                height: 4.5em;
+                padding: 0 1.6em;
             }
             .nfx-card-overlay__title {
                 font-size: 0.78em;
@@ -1417,11 +1417,11 @@
             }
             .appletv-agnative-topnav .agnative-topnav-clock {
                 right: 0.3em;
-                top: 0.35em;
-                font-size: 0.75em;
-                min-width: 3.2em;
-                height: 2.1em;
-                padding: 0 0.6em;
+                top: calc(env(safe-area-inset-top, 0px) + 15px); /* менше зміщення */
+                font-size: 1.3em;      /* ще менше */
+                min-width: 5.5em;
+                height: 3.6em;
+                padding: 0 1.2em;
             }
             .nfx-card-overlay__title {
                 font-size: 0.7em;
