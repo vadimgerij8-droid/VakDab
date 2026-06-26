@@ -136,7 +136,8 @@
         .app-container {
             max-width: 1320px;
             margin: 0 auto;
-            padding: 1.5rem 1.5rem 3rem;
+            /* Додаємо верхній відступ 3.5rem (приблизно 3-4 см) для зміщення топ-бару вниз */
+            padding: 3.5rem 1.5rem 3rem;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -383,7 +384,7 @@
         .appletv-agnative-topnav .agnative-topnav-clock {
             position: absolute;
             right: 1.15em;
-            top: .7em;
+            top: calc(0.7em + env(safe-area-inset-top, 0px)); /* ← ЗМІНА */
             z-index: 20;
             display: inline-flex;
             align-items: center;
@@ -517,6 +518,7 @@
             align-items: center;
             gap: 1.2rem;
             margin-bottom: 1.8rem;
+            padding-top: calc(1.4rem + env(safe-area-inset-top, 0px));  /* ← ДОДАНО */
             padding-bottom: 1.4rem;
             border-bottom: 1px solid var(--border);
             transition: all var(--transition);
@@ -526,6 +528,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            padding-top: env(safe-area-inset-top, 0px);  /* ← ДОДАНО */
         }
         .burger-btn {
             background: var(--surface);
@@ -1256,11 +1259,11 @@
         }
 
         /* ============================================================
-                   АДАПТИВНІСТЬ
+                   АДАПТИВНІСТЬ (з урахуванням збільшеного верхнього відступу)
                    ============================================================ */
         @media (max-width: 768px) {
             .app-container {
-                padding: 1rem;
+                padding: 3rem 1rem 2rem; /* верхній відступ зменшений, але все одно більший ніж був */
             }
             .anime-grid {
                 gap: 1rem;
@@ -1333,7 +1336,7 @@
         }
         @media (max-width: 480px) {
             .app-container {
-                padding: 0.8rem;
+                padding: 2.5rem 0.8rem 1.5rem; /* ще менший верхній відступ, але все одно додатковий */
             }
             .anime-grid {
                 grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
