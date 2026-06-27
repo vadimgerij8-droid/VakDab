@@ -111,7 +111,23 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: padding 0.3s ease;
         }
+        /* Приховуємо хедер та контент, коли відкрита модалка */
+        body.modal-open .header {
+            display: none !important;
+        }
+        body.modal-open .app-container {
+            padding: 0 !important;
+        }
+        body.modal-open .agnative-hero,
+        body.modal-open .actions-row,
+        body.modal-open .anime-grid,
+        body.modal-open .pagination-row,
+        body.modal-open footer {
+            display: none !important;
+        }
+
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -2023,6 +2039,7 @@
                 const modal = document.getElementById('animeModal');
                 if (!modal) return;
                 modal.style.display = 'none';
+                document.body.classList.remove('modal-open');
                 document.body.style.overflow = '';
                 if (lampaPlayerInstance) { lampaPlayerInstance.destroy();
                     lampaPlayerInstance = null; }
@@ -2032,6 +2049,7 @@
                 const sectionModal = document.getElementById('sectionModal');
                 if (sectionModal && sectionModal.style.display === 'flex') {
                     sectionModal.style.display = 'none';
+                    document.body.classList.remove('modal-open');
                     document.body.style.overflow = '';
                     sectionState.type = null;
                 }
@@ -2045,6 +2063,7 @@
                 modalTitle.textContent = 'Завантаження...';
                 modalBody.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-pulse"></i> Завантаження...</div>';
                 modal.style.display = 'flex';
+                document.body.classList.add('modal-open');
                 document.body.style.overflow = 'hidden';
                 try {
                     const anime = await loadAnimeDetails(url);
@@ -2509,6 +2528,7 @@
                 modalTitle.textContent = title;
                 modalBody.innerHTML = bodyHtml;
                 modal.style.display = 'flex';
+                document.body.classList.add('modal-open');
                 document.body.style.overflow = 'hidden';
                 modal.querySelector('.modal-content').scrollTop = 0;
             }
@@ -2517,6 +2537,7 @@
                 const modal = document.getElementById('sectionModal');
                 if (!modal) return;
                 modal.style.display = 'none';
+                document.body.classList.remove('modal-open');
                 document.body.style.overflow = '';
                 sectionState.type = null;
             }
@@ -2660,6 +2681,7 @@
                     if (leftdockOpen) hideLeftdock(true);
                     const pm = document.getElementById('playerModal');
                     if (pm && pm.style.display === 'flex') { pm.style.display = 'none';
+                        document.body.classList.remove('modal-open');
                         document.body.style.overflow = '';
                         if (lampaPlayerInstance) { lampaPlayerInstance.destroy();
                             lampaPlayerInstance = null; } }
@@ -2685,6 +2707,7 @@
             document.getElementById('closePlayerBtn').addEventListener('click', () => {
                 const pm = document.getElementById('playerModal');
                 if (pm) { pm.style.display = 'none';
+                    document.body.classList.remove('modal-open');
                     document.body.style.overflow = '';
                     if (lampaPlayerInstance) { lampaPlayerInstance.destroy();
                         lampaPlayerInstance = null; } }
@@ -2723,6 +2746,7 @@
                 if (e.target === document.getElementById('playerModal')) {
                     const pm = document.getElementById('playerModal');
                     pm.style.display = 'none';
+                    document.body.classList.remove('modal-open');
                     document.body.style.overflow = '';
                     if (lampaPlayerInstance) { lampaPlayerInstance.destroy();
                         lampaPlayerInstance = null; }
