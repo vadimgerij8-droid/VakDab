@@ -1,0 +1,48 @@
+.player-wrapper {
+    position: relative;
+    width: 100%;
+    background: #000;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+.player-overlay-selectors {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+.glass-select-wrap {
+    position: relative;
+    display: inline-flex;
+    flex-shrink: 0;
+}
+.glass-select {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 10px;
+    padding: 0.45rem 2rem 0.45rem 0.8rem;
+    font-weight: 600;
+    font-size: 0.78rem;
+    color: white;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    font-family: inherit;
+    max-width: 160px;
+}
+.glass-select option { background: #222; color: white; }
+.glass-select-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+    font-size: 0.7rem;
+}
