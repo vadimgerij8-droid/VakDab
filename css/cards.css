@@ -1,0 +1,91 @@
+.anime-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    animation: fadeInUp 0.5s ease both;
+    aspect-ratio: 2/3;
+}
+.anime-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent);
+}
+.anime-poster {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: #e0e0e0;
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+.dark-mode .anime-poster { background: #2a2a2a; }
+.anime-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.anime-card:hover .anime-poster img { transform: scale(1.05); }
+.nfx-card-overlay {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.6em 0.9em 0.8em;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.2) 70%, transparent 100%);
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.nfx-card-overlay__title {
+    color: #ffffff;
+    font-size: 0.9em;
+    font-weight: 800;
+    line-height: 1.2;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0.2em;
+    background: rgba(18, 18, 18, 0.72);
+    padding: 0.3em 0.55em;
+    border-radius: 7px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+.nfx-card-overlay__ua {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.65em;
+    font-weight: 700;
+    padding: 0.15em 0.6em;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    backdrop-filter: blur(4px);
+    align-self: flex-start;
+}
+.anime-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
+    gap: 1.6rem;
+    margin-top: 0.5rem;
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .anime-grid { gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+    .nfx-card-overlay__title { font-size: 0.78em; padding: 0.25em 0.45em; border-radius: 5px; }
+}
+@media (max-width: 480px) {
+    .anime-grid { grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)); gap: 0.8rem; }
+    .nfx-card-overlay__title { font-size: 0.7em; padding: 0.2em 0.4em; border-radius: 4px; }
+}
