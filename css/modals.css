@@ -1,0 +1,141 @@
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+.modal-content {
+    background: var(--surface);
+    max-width: 1000px;
+    width: 100%;
+    max-height: 90vh;
+    border-radius: var(--radius-lg);
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border);
+    animation: scaleIn 0.3s ease;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.3rem 1.8rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+    z-index: 5;
+}
+.modal-header h2 { font-size: 1.4rem; font-weight: 700; color: var(--text); }
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    padding: 0.3rem;
+    line-height: 1;
+    border-radius: 50%;
+    width: 38px; height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.close-modal:hover {
+    color: var(--text);
+    transform: rotate(90deg);
+    background: var(--hover);
+}
+.modal-body { padding: 1.8rem; }
+#animeModal,
+#sectionModal {
+    background: var(--bg);
+    padding: 0;
+    backdrop-filter: none;
+}
+#animeModal .modal-content,
+#sectionModal .modal-content {
+    max-width: 1320px;
+    width: 100%;
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    margin: 0 auto;
+}
+.back-button {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    font-size: 1.2rem;
+    margin-right: 1rem;
+}
+.back-button:hover {
+    background: var(--accent);
+    color: var(--accent-text);
+    border-color: var(--accent);
+    transform: translateX(-3px);
+}
+#animeModal .modal-header,
+#sectionModal .modal-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    justify-content: flex-start;
+}
+.anime-detail-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+}
+.detail-poster { flex: 0 0 170px; }
+.detail-poster img {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border);
+}
+.detail-info { flex: 1; min-width: 250px; }
+.synopsis {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    transition: all 0.3s ease;
+}
+.synopsis.expanded {
+    display: block;
+    -webkit-line-clamp: unset;
+}
+.more-btn {
+    background: none;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0;
+    margin-top: 5px;
+    text-decoration: underline;
+    display: none;
+}
+
+@media (max-width: 480px) {
+    .modal-header { padding: 0.8rem 1rem; }
+    .modal-body { padding: 0.8rem; }
+    .anime-detail-grid { flex-direction: column; gap: 1rem; }
+    .detail-poster { flex-basis: auto; max-width: 140px; }
+}
