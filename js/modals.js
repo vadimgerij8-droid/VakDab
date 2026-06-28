@@ -14,6 +14,9 @@ export function closeDetailModal() {
 }
 
 export async function openDetailModal(url) {
+    // Виправлення: закриваємо sectionModal, щоб animeModal не перекривався
+    closeSectionModal();
+
     const modal = document.getElementById('animeModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
