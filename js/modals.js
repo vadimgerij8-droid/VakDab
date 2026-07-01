@@ -1,6 +1,7 @@
 import { loadAnimeDetails, fetchByGenre, searchAnimeUA } from './api.js';
 import { LampaPlayer } from './player.js';
 import { showToast } from './ui.js';
+import { openSettingsSection as openSettings, closeSettingsSection, initSettings } from './settings.js';
 
 let currentDetailAnime = null;
 let lampaPlayerInstance = null;
@@ -14,9 +15,7 @@ export function closeDetailModal() {
 }
 
 export async function openDetailModal(url) {
-    // Виправлення: закриваємо sectionModal, щоб animeModal не перекривався
     closeSectionModal();
-
     const modal = document.getElementById('animeModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
@@ -40,7 +39,7 @@ export async function openDetailModal(url) {
         const totalEpisodes = Object.values(anime.seasons).reduce((sum, s) => sum + Object.values(s).reduce((s2, e) => Math.max(s2, e.length), 0), 0);
         modalBody.innerHTML = `
         <div class="anime-detail-grid">
-          <div class="detail-poster"><img src="${anime.images.jpg.large_image_url}" alt="${anime.title}" onerror="this.src='data:image/svg+xml,...'"></div>
+          <div class="detail-poster"><img src="${anime.images.jpg.large_image_url}" alt="${anime.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22170%22 height=%22238%22%3E%3Crect fill=%22%23ddd%22 width=%22170%22 height=%22238%22/%3E%3C/svg%3E'"></div>
           <div class="detail-info">
             <div><span class="tag"><i class="fas fa-calendar"></i> ${anime.year||'—'}</span><span class="tag"><i class="fas fa-film"></i> ${totalEpisodes} еп.</span></div>
             <div style="margin:0.5rem 0">${anime.genres.map(g=>`<span class="tag">${g}</span>`).join('')} ${anime.rating?`<span class="tag" style="background:var(--accent);color:var(--accent-text);"><i class="fas fa-user-shield"></i> ${anime.rating}</span>`:''}</div>
@@ -50,9 +49,9 @@ export async function openDetailModal(url) {
         <div style="margin-top:1.5rem;position:relative;">
           <div id="lampaDetailPlayer" style="width:100%;background:#000;border-radius:12px;overflow:hidden;aspect-ratio:16/9;"></div>
           <div class="player-overlay-selectors">
-            <div class="glass-select-wrap"><select class="glass-select" id="seasonSelect">${seasons.map(s=>`<option value="${s}" ${s===firstSeason?'selected':''}>Сезон ${s}</option>`).join('')}</select><span class="glass-select-arrow">▼</span></div>
-            <div class="glass-select-wrap"><select class="glass-select" id="dubSelect">${dubs.map(d=>`<option value="${d}" ${d===firstDub?'selected':''}>${d}</option>`).join('')}</select><span class="glass-select-arrow">▼</span></div>
-            <div class="glass-select-wrap"><select class="glass-select" id="episodeSelect">${episodes.map((ep,i)=>`<option value="${ep.file}" ${i===0?'selected':''}>Еп. ${ep.episode}</option>`).join('')}</select><span class="glass-select-arrow">▼</span></div>
+            <div class="glass-select-wrap"><select class="glass-select" id="seasonSelect">${seasons.map(s=>`<option value="${s}" ${s===firstSeason?'selected':''}>Сезон ${s}</option>`).join('')}</select><span class="select-label">Сезон</span></div>
+            <div class="glass-select-wrap"><select class="glass-select" id="dubSelect">${dubs.map(d=>`<option value="${d}" ${d===firstDub?'selected':''}>${d}</option>`).join('')}</select><span class="select-label">Озвучка</span></div>
+            <div class="glass-select-wrap"><select class="glass-select" id="episodeSelect">${episodes.map((ep,i)=>`<option value="${ep.file}" ${i===0?'selected':''}>Еп. ${ep.episode}</option>`).join('')}</select><span class="select-label">Епізод</span></div>
           </div>
         </div>`;
         const playerContainer = document.getElementById('lampaDetailPlayer');
@@ -89,11 +88,11 @@ export async function openDetailModal(url) {
             moreBtn.addEventListener('click', () => { const exp = synText.classList.toggle('expanded'); moreBtn.textContent = exp ? 'менше' : 'більше'; });
         }
     } catch (err) {
-        modalBody.innerHTML = `<div class="loader"><i class="fas fa-exclamation-circle"></i> Помилка: ${err.message}<br><button class="btn-outline" style="margin-top:1rem;" onclick="openDetailModal('${url}')">🔄 Спробувати знову</button></div>`;
+        modalBody.innerHTML = `<div class="loader"><i class="fas fa-exclamation-circle"></i> Помилка: ${err.message}<br><button class="btn-outline" style="margin-top:1rem;">🔄 Повторити</button></div>`;
+        modalBody.querySelector('.btn-outline')?.addEventListener('click', () => openDetailModal(url));
     }
 }
 
-// Section modal
 const sectionState = { type: null, genreSlug: null, genreName: null, searchQuery: '', page: 1, list: [] };
 
 export function closeSectionModal() {
@@ -122,7 +121,7 @@ function renderSectionCards(list, container) {
     html += list.map((a, idx) => `
       <div class="anime-card" data-url="${a.url}" tabindex="0" role="button" aria-label="${a.title}" style="animation-delay:${idx*0.04}s">
         <div class="anime-poster">
-          <img src="${a.images.jpg.large_image_url}" alt="${a.title}" loading="lazy" class="img--blur" onload="this.classList.add('img--loaded')" onerror="this.src='data:image/svg+xml,...'">
+          <img src="${a.images.jpg.large_image_url}" alt="${a.title}" loading="lazy" class="img--blur" onload="this.classList.add('img--loaded')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22250%22%3E%3Crect fill=%22%23333%22 width=%22180%22 height=%22250%22/%3E%3C/svg%3E'">
           <div class="nfx-card-overlay">
             <div class="nfx-card-overlay__title">${a.title}</div>
             <div class="nfx-card-overlay__ua">UA</div>
@@ -141,12 +140,8 @@ function renderSectionCards(list, container) {
     });
     const prevBtn = document.getElementById('sectionPrevBtn');
     const nextBtn = document.getElementById('sectionNextBtn');
-    if (prevBtn) prevBtn.addEventListener('click', () => {
-        if (sectionState.page > 1) { sectionState.page--; loadGenreContent(); }
-    });
-    if (nextBtn) nextBtn.addEventListener('click', () => {
-        sectionState.page++; loadGenreContent();
-    });
+    if (prevBtn) prevBtn.addEventListener('click', () => { if (sectionState.page > 1) { sectionState.page--; loadGenreContent(); } });
+    if (nextBtn) nextBtn.addEventListener('click', () => { sectionState.page++; loadGenreContent(); });
 }
 
 async function loadGenreContent() {
@@ -157,7 +152,8 @@ async function loadGenreContent() {
         sectionState.list = list;
         renderSectionCards(list, body);
     } catch (err) {
-        body.innerHTML = `<div class="loader"><i class="fas fa-exclamation-triangle"></i> Помилка: ${err.message}<br><button class="btn-outline" style="margin-top:1rem;" onclick="loadGenreContent()">🔄 Спробувати знову</button></div>`;
+        body.innerHTML = `<div class="loader"><i class="fas fa-exclamation-triangle"></i> Помилка: ${err.message}<br><button class="btn-outline" style="margin-top:1rem;">🔄 Повторити</button></div>`;
+        body.querySelector('.btn-outline')?.addEventListener('click', loadGenreContent);
     }
 }
 
@@ -191,7 +187,7 @@ export function openSearchSection() {
     const bodyHtml = `
     <div class="search-wrapper" style="margin-bottom:1.5rem;">
       <i class="fas fa-search"></i>
-      <input type="text" id="sectionSearchInput" placeholder="Пошук аніме..." autocomplete="off" style="border:none;outline:none;background:transparent;width:100%;font-size:0.97rem;color:var(--text);" />
+      <input type="text" id="sectionSearchInput" placeholder="Пошук аніме..." autocomplete="off" style="border:none;outline:none;background:transparent;width:100%;font-size:0.97rem;color:var(--text);">
     </div>
     <div id="sectionSearchResults"><div class="loader">Введіть пошуковий запит</div></div>`;
     openSectionModal('Пошук', bodyHtml);
@@ -213,5 +209,5 @@ export function openSearchSection() {
 }
 
 export function openSettingsSection() {
-    openSectionModal('Налаштування', '<div class="loader" style="padding:4rem;"><i class="fas fa-cog" style="font-size:3rem;margin-bottom:1rem;"></i><p>Налаштування незабаром</p></div>');
+    openSettings();
 }

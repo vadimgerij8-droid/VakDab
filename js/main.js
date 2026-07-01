@@ -1,20 +1,14 @@
 import { PROXY_URL, ANIMEUA_BASE, GENRE_MAP } from './config.js';
 import { Storage } from './storage.js';
-import {
-    currentTab, currentPage, currentSearchQuery, currentGenreSlug, currentList,
-    setCurrentTab, setCurrentPage, setCurrentSearchQuery, setCurrentGenreSlug, setCurrentList
-} from './state.js';
+import { currentTab, currentPage, currentSearchQuery, currentGenreSlug, currentList, setCurrentTab, setCurrentPage, setCurrentSearchQuery, setCurrentGenreSlug, setCurrentList } from './state.js';
 import { fetchMainPage, searchAnimeUA, fetchByGenre, fetchTop100 } from './api.js';
 import { LampaPlayer } from './player.js';
 import { buildHeroBanner, stopHeroRotation } from './hero.js';
 import { buildLeftdock, toggleLeftdock, showLeftdock, hideLeftdock, syncLeftdockActive } from './leftdock.js';
-import {
-    openDetailModal, closeDetailModal, closeSectionModal,
-    openGenreSection, openSearchSection, openSettingsSection
-} from './modals.js';
+import { openDetailModal, closeDetailModal, closeSectionModal, openGenreSection, openSearchSection, openSettingsSection } from './modals.js';
 import { applyTheme, toggleTheme, startClock, showToast } from './ui.js';
+import { initSettings, closeSettingsSection } from './settings.js';
 
-// --- DOM references ---
 const animeContainer = document.getElementById('animeContainer');
 const paginationRow = document.getElementById('paginationRow');
 const searchInput = document.getElementById('searchInput');
@@ -22,8 +16,8 @@ const clearBtn = document.getElementById('searchClearBtn');
 const top100Btn = document.getElementById('top100Btn');
 const randomBtn = document.getElementById('randomBtn');
 const backToTopBtn = document.getElementById('backToTopBtn');
+const settingsBtn = document.getElementById('settingsBtn');
 
-// --- Функції навігації ---
 function showMainPage() {
     setCurrentTab('main');
     setCurrentPage(1);
@@ -70,7 +64,6 @@ function openRandomAnime() {
     showToast('🎲 Випадкове аніме');
 }
 
-// --- Завантаження контенту ---
 function showSkeleton() {
     if (!animeContainer) return;
     const cols = Math.floor(animeContainer.offsetWidth / 195) || 4;
@@ -93,7 +86,7 @@ async function loadContent() {
         setCurrentList(list);
         renderCards(list);
     } catch (err) {
-        animeContainer.innerHTML = `<div class="loader"><i class="fas fa-exclamation-triangle"></i> Помилка: ${err.message}<br><button class="btn-outline" style="margin-top:1rem;">🔄 Спробувати знову</button></div>`;
+        animeContainer.innerHTML = `<div class="loader"><i class="fas fa-exclamation-triangle"></i> Помилка: ${err.message}<br><button class="btn-outline" style="margin-top:1rem;">🔄 Спробувати ще</button></div>`;
         animeContainer.querySelector('.btn-outline')?.addEventListener('click', loadContent);
     }
 }
@@ -115,7 +108,7 @@ function renderCards(list) {
     animeContainer.innerHTML = list.map((a, idx) => `
       <div class="anime-card" data-url="${a.url}" tabindex="0" role="button" aria-label="${a.title}" style="animation-delay:${idx*0.04}s">
         <div class="anime-poster">
-          <img src="${a.images.jpg.large_image_url}" alt="${a.title}" loading="lazy" class="img--blur" onload="this.classList.add('img--loaded')" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22280%22><rect fill=%22%23ddd%22 width=%22200%22 height=%22280%22/><text x=%22100%22 y=%22140%22 text-anchor=%22middle%22 fill=%22%23999%22 font-size=%2214%22>Немає</text></svg>'">
+          <img src="${a.images.jpg.large_image_url}" alt="${a.title}" loading="lazy" class="img--blur" onload="this.classList.add('img--loaded')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22250%22%3E%3Crect fill=%22%23333%22 width=%22180%22 height=%22250%22/%3E%3C/svg%3E'">
           <div class="nfx-card-overlay">
             <div class="nfx-card-overlay__title">${a.title}</div>
             <div class="nfx-card-overlay__ua">UA</div>
@@ -148,13 +141,11 @@ function renderPagination() {
     });
 }
 
-// --- Back to top ---
 function updateBackToTop() {
     if (window.scrollY > 500) backToTopBtn?.classList.add('visible');
     else backToTopBtn?.classList.remove('visible');
 }
 
-// --- Пошук ---
 let searchDebounce = 0;
 function handleSearchInput() {
     const q = searchInput.value.trim();
@@ -177,13 +168,13 @@ function handleSearchInput() {
     }, 400);
 }
 
-// --- Клавіатура ---
 function onKeyDown(e) {
     const tag = document.activeElement?.tagName?.toLowerCase();
     const isInput = tag === 'input' || tag === 'textarea' || tag === 'select' || document.activeElement?.isContentEditable;
     if (e.key === 'Escape') {
         closeDetailModal();
         closeSectionModal();
+        closeSettingsSection();
         hideLeftdock(true);
         const pm = document.getElementById('playerModal');
         if (pm && pm.style.display === 'flex') {
@@ -197,12 +188,13 @@ function onKeyDown(e) {
     if (e.key === '/' || (e.key === 'k' && (e.ctrlKey || e.metaKey))) { e.preventDefault(); searchInput?.focus(); return; }
     if (e.key === 'm' || e.key === 'M') { e.preventDefault(); toggleLeftdock(); return; }
     if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(); return; }
+    if (e.key === 's' || e.key === 'S') { e.preventDefault(); openSettingsSection(); return; }
     if (e.key === 'r' || e.key === 'R') { e.preventDefault(); openRandomAnime(); return; }
 }
 
-// --- Ініціалізація ---
 function init() {
     applyTheme(Storage.getTheme());
+    initSettings();
     buildLeftdock({
         showMainPage,
         openGenreSection,
@@ -214,9 +206,9 @@ function init() {
     showMainPage();
     updateBackToTop();
 
-    // Події
     document.getElementById('burgerBtn')?.addEventListener('click', (e) => { e.stopPropagation(); toggleLeftdock(); });
     document.getElementById('themeToggleBtn')?.addEventListener('click', toggleTheme);
+    document.getElementById('settingsBtn')?.addEventListener('click', openSettingsSection);
     top100Btn?.addEventListener('click', showTop100);
     randomBtn?.addEventListener('click', openRandomAnime);
     document.getElementById('closeModalBtn')?.addEventListener('click', closeDetailModal);
@@ -230,6 +222,7 @@ function init() {
     backToTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     window.addEventListener('scroll', updateBackToTop, { passive: true });
     document.addEventListener('keydown', onKeyDown);
+    document.getElementById('closeSectionModalBtn')?.addEventListener('click', closeSectionModal);
 
     window.addEventListener('click', e => {
         if (e.target === document.getElementById('animeModal')) closeDetailModal();
