@@ -1,7 +1,6 @@
 import { loadAnimeDetails, fetchByGenre, searchAnimeUA } from './api.js';
 import { LampaPlayer } from './player.js';
 import { showToast } from './ui.js';
-import { openSettingsSection as openSettings, closeSettingsSection, initSettings } from './settings.js';
 
 let currentDetailAnime = null;
 let lampaPlayerInstance = null;
@@ -16,6 +15,7 @@ export function closeDetailModal() {
 
 export async function openDetailModal(url) {
     closeSectionModal();
+
     const modal = document.getElementById('animeModal');
     const modalTitle = document.getElementById('modalTitle');
     const modalBody = document.getElementById('modalBody');
@@ -39,7 +39,7 @@ export async function openDetailModal(url) {
         const totalEpisodes = Object.values(anime.seasons).reduce((sum, s) => sum + Object.values(s).reduce((s2, e) => Math.max(s2, e.length), 0), 0);
         modalBody.innerHTML = `
         <div class="anime-detail-grid">
-          <div class="detail-poster"><img src="${anime.images.jpg.large_image_url}" alt="${anime.title}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22170%22 height=%22238%22%3E%3Crect fill=%22%23ddd%22 width=%22170%22 height=%22238%22/%3E%3C/svg%3E'"></div>
+          <div class="detail-poster"><img src="${anime.images.jpg.large_image_url}" alt="${anime.title}"></div>
           <div class="detail-info">
             <div><span class="tag"><i class="fas fa-calendar"></i> ${anime.year||'—'}</span><span class="tag"><i class="fas fa-film"></i> ${totalEpisodes} еп.</span></div>
             <div style="margin:0.5rem 0">${anime.genres.map(g=>`<span class="tag">${g}</span>`).join('')} ${anime.rating?`<span class="tag" style="background:var(--accent);color:var(--accent-text);"><i class="fas fa-user-shield"></i> ${anime.rating}</span>`:''}</div>
@@ -121,7 +121,7 @@ function renderSectionCards(list, container) {
     html += list.map((a, idx) => `
       <div class="anime-card" data-url="${a.url}" tabindex="0" role="button" aria-label="${a.title}" style="animation-delay:${idx*0.04}s">
         <div class="anime-poster">
-          <img src="${a.images.jpg.large_image_url}" alt="${a.title}" loading="lazy" class="img--blur" onload="this.classList.add('img--loaded')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22250%22%3E%3Crect fill=%22%23333%22 width=%22180%22 height=%22250%22/%3E%3C/svg%3E'">
+          <img src="${a.images.jpg.large_image_url}" alt="${a.title}" loading="lazy" class="img--blur" onload="this.classList.add('img--loaded')">
           <div class="nfx-card-overlay">
             <div class="nfx-card-overlay__title">${a.title}</div>
             <div class="nfx-card-overlay__ua">UA</div>
@@ -209,5 +209,5 @@ export function openSearchSection() {
 }
 
 export function openSettingsSection() {
-    openSettings();
+    showToast('⚙️ Налаштування відкриті в меню (M)');
 }

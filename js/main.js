@@ -1,13 +1,18 @@
 import { PROXY_URL, ANIMEUA_BASE, GENRE_MAP } from './config.js';
 import { Storage } from './storage.js';
-import { currentTab, currentPage, currentSearchQuery, currentGenreSlug, currentList, setCurrentTab, setCurrentPage, setCurrentSearchQuery, setCurrentGenreSlug, setCurrentList } from './state.js';
+import {
+    currentTab, currentPage, currentSearchQuery, currentGenreSlug, currentList,
+    setCurrentTab, setCurrentPage, setCurrentSearchQuery, setCurrentGenreSlug, setCurrentList
+} from './state.js';
 import { fetchMainPage, searchAnimeUA, fetchByGenre, fetchTop100 } from './api.js';
 import { LampaPlayer } from './player.js';
 import { buildHeroBanner, stopHeroRotation } from './hero.js';
 import { buildLeftdock, toggleLeftdock, showLeftdock, hideLeftdock, syncLeftdockActive } from './leftdock.js';
-import { openDetailModal, closeDetailModal, closeSectionModal, openGenreSection, openSearchSection, openSettingsSection } from './modals.js';
+import {
+    openDetailModal, closeDetailModal, closeSectionModal,
+    openGenreSection, openSearchSection, openSettingsSection
+} from './modals.js';
 import { applyTheme, toggleTheme, startClock, showToast } from './ui.js';
-import { initSettings, closeSettingsSection } from './settings.js';
 
 const animeContainer = document.getElementById('animeContainer');
 const paginationRow = document.getElementById('paginationRow');
@@ -16,7 +21,6 @@ const clearBtn = document.getElementById('searchClearBtn');
 const top100Btn = document.getElementById('top100Btn');
 const randomBtn = document.getElementById('randomBtn');
 const backToTopBtn = document.getElementById('backToTopBtn');
-const settingsBtn = document.getElementById('settingsBtn');
 
 function showMainPage() {
     setCurrentTab('main');
@@ -108,7 +112,7 @@ function renderCards(list) {
     animeContainer.innerHTML = list.map((a, idx) => `
       <div class="anime-card" data-url="${a.url}" tabindex="0" role="button" aria-label="${a.title}" style="animation-delay:${idx*0.04}s">
         <div class="anime-poster">
-          <img src="${a.images.jpg.large_image_url}" alt="${a.title}" loading="lazy" class="img--blur" onload="this.classList.add('img--loaded')" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22180%22 height=%22250%22%3E%3Crect fill=%22%23333%22 width=%22180%22 height=%22250%22/%3E%3C/svg%3E'">
+          <img src="${a.images.jpg.large_image_url}" alt="${a.title}" loading="lazy" class="img--blur" onload="this.classList.add('img--loaded')">
           <div class="nfx-card-overlay">
             <div class="nfx-card-overlay__title">${a.title}</div>
             <div class="nfx-card-overlay__ua">UA</div>
@@ -174,7 +178,6 @@ function onKeyDown(e) {
     if (e.key === 'Escape') {
         closeDetailModal();
         closeSectionModal();
-        closeSettingsSection();
         hideLeftdock(true);
         const pm = document.getElementById('playerModal');
         if (pm && pm.style.display === 'flex') {
@@ -188,13 +191,11 @@ function onKeyDown(e) {
     if (e.key === '/' || (e.key === 'k' && (e.ctrlKey || e.metaKey))) { e.preventDefault(); searchInput?.focus(); return; }
     if (e.key === 'm' || e.key === 'M') { e.preventDefault(); toggleLeftdock(); return; }
     if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTheme(); return; }
-    if (e.key === 's' || e.key === 'S') { e.preventDefault(); openSettingsSection(); return; }
     if (e.key === 'r' || e.key === 'R') { e.preventDefault(); openRandomAnime(); return; }
 }
 
 function init() {
     applyTheme(Storage.getTheme());
-    initSettings();
     buildLeftdock({
         showMainPage,
         openGenreSection,
@@ -208,7 +209,6 @@ function init() {
 
     document.getElementById('burgerBtn')?.addEventListener('click', (e) => { e.stopPropagation(); toggleLeftdock(); });
     document.getElementById('themeToggleBtn')?.addEventListener('click', toggleTheme);
-    document.getElementById('settingsBtn')?.addEventListener('click', openSettingsSection);
     top100Btn?.addEventListener('click', showTop100);
     randomBtn?.addEventListener('click', openRandomAnime);
     document.getElementById('closeModalBtn')?.addEventListener('click', closeDetailModal);

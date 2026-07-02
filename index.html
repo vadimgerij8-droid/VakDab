@@ -15,6 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest" defer></script>
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <meta name="theme-color" content="#0d0d0d" />
+
+    <!-- CSS -->
     <link rel="stylesheet" href="css/variables.css">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/header.css">
@@ -24,10 +26,11 @@
     <link rel="stylesheet" href="css/modals.css">
     <link rel="stylesheet" href="css/player.css">
     <link rel="stylesheet" href="css/ui.css">
-    <link rel="stylesheet" href="css/settings.css">
 </head>
 <body class="appletv-agnative-topnav">
     <div class="app-container">
+
+        <!-- ХЕДЕР -->
         <div class="header">
             <div class="header-left">
                 <button class="burger-btn" id="burgerBtn" aria-label="Відкрити меню" title="Меню (M)">
@@ -50,19 +53,20 @@
                     <span class="search-shortcut">/</span>
                     <button class="search-clear" id="searchClearBtn" aria-label="Очистити"><i class="fas fa-times-circle"></i></button>
                 </div>
-                <button id="settingsBtn" class="btn-icon" title="Налаштування (S)" aria-label="Налаштування">
-                    <i class="fas fa-cog"></i>
-                </button>
                 <button id="themeToggleBtn" class="btn-icon" title="Змінити тему (T)">
                     <i class="fas fa-moon"></i>
                 </button>
             </div>
             <div class="agnative-topnav-clock" id="agnativeTopnavClock">00:00</div>
         </div>
+
+        <!-- LEFTDOCK -->
         <div class="leftdock-overlay" id="leftdockOverlay"></div>
         <aside class="agnative-leftdock" id="leftdock" aria-label="Головне меню">
             <div class="agnative-leftdock__inner" id="leftdockInner"></div>
         </aside>
+
+        <!-- HERO BANNER -->
         <div class="agnative-hero agnative-hero--visible" id="heroBanner" style="display:none;">
             <img class="agnative-hero__bg" alt="" />
             <div class="agnative-hero__content">
@@ -74,20 +78,31 @@
             <div class="agnative-hero__play selector" tabindex="0" data-selector="true" title="Дивитися"></div>
             <div class="agnative-hero__indicators"></div>
         </div>
+
+        <!-- КНОПКИ ДІЙ -->
         <div class="actions-row" id="actionsRow">
             <button class="action-pill" id="top100Btn" title="ТОП 100 аніме"><i class="fas fa-crown"></i> ТОП 100</button>
             <button class="action-pill" id="randomBtn" title="Випадкове аніме (R)"><i class="fas fa-dice-d6"></i> Випадкове</button>
         </div>
+
+        <!-- СІТКА -->
         <div id="animeContainer" class="anime-grid">
             <div class="loader"><i class="fas fa-spinner fa-pulse"></i> Завантаження аніме...</div>
         </div>
         <div class="pagination-row" id="paginationRow"></div>
-        <footer><span>VAKDAB &copy; 2026 — Усі права захищено • Клавіші: / пошук, M меню, T тема, S налаштування, R випадкове</span></footer>
+
+        <footer><span>VAKDAB &copy; 2026 — Усі права захищено • Клавіші: / пошук, M меню, T тема, R випадкове</span></footer>
     </div>
+
+    <!-- КНОПКА НАГОРУ -->
     <button class="back-to-top" id="backToTopBtn" title="Нагору" aria-label="Прокрутити нагору">
         <i class="fas fa-chevron-up"></i>
     </button>
+
+    <!-- TOAST -->
     <div class="toast" id="toast"></div>
+
+    <!-- МОДАЛКА ДЕТАЛЕЙ -->
     <div id="animeModal" class="modal" role="dialog" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
@@ -97,6 +112,8 @@
             <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
+
+    <!-- МОДАЛКА ПЛЕЄРА -->
     <div id="playerModal" class="modal" role="dialog" aria-modal="true">
         <div class="modal-content" style="max-width:900px;">
             <div class="modal-header"><h2>Плеєр</h2><button class="close-modal" id="closePlayerBtn" title="Закрити (Esc)">&times;</button></div>
@@ -106,6 +123,8 @@
             </div>
         </div>
     </div>
+
+    <!-- МОДАЛКА СЕКЦІЙ -->
     <div id="sectionModal" class="modal" role="dialog" aria-modal="true">
         <div class="modal-content">
             <div class="modal-header">
@@ -115,6 +134,8 @@
             <div class="modal-body" id="sectionModalBody"></div>
         </div>
     </div>
+
+    <!-- JS головний модуль -->
     <script type="module" src="js/main.js"></script>
 </body>
 </html>
